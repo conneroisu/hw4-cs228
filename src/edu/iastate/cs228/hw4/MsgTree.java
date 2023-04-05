@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * @author Kenneth Schueman
- *
+ * <p>
  * Com S 228 Fall 2022
  * Project 4: Archived Message Reconstruction
  */
@@ -20,15 +20,13 @@ public MsgTree right;
 private static int staticCharIdx = 0;
 
 private static String encodeStr;
-private static String tempStr;
 private static String encodingStr;
 private static String inputFileName;
 
 /**
  * Takes .arch file, creates binary tree and then decodes and prints message
  *
- * @param args
- * @throws FileNotFoundException
+ * @throws FileNotFoundException    if the file does not exist or is not found
  */
 public static void main(String[] args) throws FileNotFoundException
 {
@@ -50,7 +48,7 @@ public static void main(String[] args) throws FileNotFoundException
 /**
  * Scans for file name and then sets it as String inputFileName
  *
- * @throws FileNotFoundException
+ * @throws FileNotFoundException if the file does not exist or is not found
  */
 private static void getFileName() throws FileNotFoundException
 {
@@ -65,7 +63,7 @@ private static void getFileName() throws FileNotFoundException
 /**
  * Builds strings from file input
  *
- * @throws FileNotFoundException
+ * @throws FileNotFoundException if the file does not exist or is not found
  */
 private static void buildCodeStrings() throws FileNotFoundException {
 
@@ -84,7 +82,7 @@ private static void buildCodeStrings() throws FileNotFoundException {
     }
 
     encodeStr = fileScanner.nextLine();
-    tempStr = fileScanner.nextLine();
+    String tempStr = fileScanner.nextLine();
     encodingStr = "";
 
     for (int x = 0; x < tempStr.length(); x++) {
@@ -103,7 +101,7 @@ private static void buildCodeStrings() throws FileNotFoundException {
 /**
  * Constructs a tree
  *
- * @param EncodedStr string
+ * @param EncodedStr string to be decoded
  */
 public MsgTree(String EncodedStr)
 {
@@ -139,7 +137,7 @@ public MsgTree(char payloadChar)
  * Prints values from binary tree and their binary codes
  *
  * @param root    = root tree
- * @param codeMsg
+ * @param codeMsg = binary code
  */
 public static void printCodes(MsgTree root, String codeMsg)
 {
@@ -160,22 +158,22 @@ public static void printCodes(MsgTree root, String codeMsg)
  * Decodes message using binary tree method
  *
  * @param codes a binary search tree given character codes.
- * @param msg   = to be decoded
+ * @param message   = to be decoded
  */
-public static void decode(MsgTree codes, String msg)
+public static void decode(MsgTree codes, String message)
 {
     MsgTree thisTree = codes;
 
     char curChar;
     int curCharIndex = 0;
-    int msgLength = msg.length();
-    int msgLastIndex = msg.length() - 1;
+    int msgLength = message.length();
+    int msgLastIndex = message.length() - 1;
 
     String decodedMsg = "";
 
     while (curCharIndex < msgLength)
     {
-        curChar = msg.charAt(curCharIndex);
+        curChar = message.charAt(curCharIndex);
 
         if (curChar == '0')
         {
