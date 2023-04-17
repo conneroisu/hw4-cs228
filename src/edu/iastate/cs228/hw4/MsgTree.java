@@ -59,7 +59,8 @@ public class MsgTree {
     // initialize the left MsgTree reference to a new MsgTree object constructed with the character at the static character index.
     this.left = new MsgTree(EncodedString.charAt(staticCharacterIndex));
 
-    // if the left MsgTree reference is a leaf node, then set the left MsgTree reference to a new MsgTree object constructed with the encoded string.
+    // if the left MsgTree reference is an internal node,then set the left MsgTree reference to a new MsgTree object
+    // constructed with the encoded string.
     if (this.left.payloadCharacter == '^') {
       this.left = new MsgTree(EncodedString);
     }
@@ -116,9 +117,11 @@ public class MsgTree {
     // Set the input file name to the next line.
     try {
       inputFileName = inputScanner.nextLine().trim();
-      File try_File = new File(inputFileName);
+      new File(inputFileName);
     } catch (Exception e) {
-      throw new FileNotFoundException( " File '" + inputFileName + "' does not exist. ");
+      throw new FileNotFoundException(
+        " File '" + inputFileName + "' does not exist. "
+      );
     }
     inputScanner.close();
   }
@@ -183,8 +186,7 @@ public class MsgTree {
   /**
    * Decodes a binary message from a tree structure called MsgTree.It traverses the tree according to
    * each character (0 or 1)in the input message and constructs a decoded message.Generally it does
-   * the following: 1.Initializes variables.2.Loops until all characters are processed (using while
-   * loop).3.Finally, it prints the decoded message.
+   * the following: starting at root, repeatedly scan one bit going to the left if 0 and right otherwise; finally, print the character at the leaf node.
    *
    * @param codes   a binary search tree for decoding the message.
    * @param message a string of 1's and 0's to be decoded.
