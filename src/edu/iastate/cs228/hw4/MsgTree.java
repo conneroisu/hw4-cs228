@@ -47,13 +47,11 @@ public class MsgTree {
      */
     public MsgTree right;
 
-    /**
-     * A constructor for a MsgTree object that takes a string representing the
-     * encoded string as a parameter.
-     *
-     * @param EncodedString the given string to be decoded.
-     */
-    public MsgTree(String EncodedString) {
+/**
+ * A constructor for a MsgTree object that takes a string as a parameter representing an encoded string.
+ * @param EncodedString the encoded string being used to construct the MsgTree object.
+ */
+public MsgTree(String EncodedString) {
         // initialize the payloadCharacter to the character at the current static character index.
         this.payloadCharacter = EncodedString.charAt(staticCharacterIndex);
 
@@ -131,9 +129,9 @@ public class MsgTree {
                 throw new FileNotFoundException();
             }
         } catch (Exception e) {
-            if(isNotArch){
-                throw new FileNotFoundException(" File '" + inputFileName + "' does not have the .arch extension. ");
-            }else {
+            if (isNotArch) {
+                throw new FileNotFoundException(" File '" + inputFileName + "' does not have the .arch extension needed per specifications. ");
+            } else {
                 throw new FileNotFoundException(" File '" + inputFileName + "' does not exist. ");
             }
         }
@@ -160,18 +158,19 @@ public class MsgTree {
         }
         encodeString = fileScanner.nextLine();
         String tempStr = fileScanner.nextLine();
+        StringBuilder sb = new StringBuilder().append(encodeString);
         encodingString = "";
-        // Loop through the temporary string, checking for invalid characters.
         for (int x = 0; x < tempStr.length(); x++) {
             if (tempStr.charAt(x) != '1' && tempStr.charAt(x) != '0') {
-                encodeString += "\n";
-                encodeString += tempStr;
+                sb.append("\n");
+                sb.append(tempStr);
                 encodingString = fileScanner.nextLine();
                 x = tempStr.length();
             } else {
                 encodingString = tempStr;
             }
         }
+        encodeString = sb.toString();
         fileScanner.close();
     }
 
