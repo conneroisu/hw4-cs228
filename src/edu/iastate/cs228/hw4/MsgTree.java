@@ -7,8 +7,8 @@ import java.util.Scanner;
 /**
  * A binary tree that stores characters in the leaves.The binary tree is built
  * from an encoded string.The purpose of this class is to reconstruct/unzip a
- * message archived/encoded with a binary-tree-based algorithm with an
- * `.arch` extension.
+ * message archived/encoded with a binary-tree-based algorithm with an `.arch`
+ * extension.
  *
  * @author Conner Ohnesorge
  */
@@ -97,14 +97,15 @@ public class MsgTree {
      * @throws FileNotFoundException if the file does not exist or is not found
      */
     public static void main(String[] args) throws FileNotFoundException {
-        getFileName(); // get the file name from the user.
-        buildCodeStrings(); // build the encoded string and the encoding string.
-        MsgTree mainTree = new MsgTree(encodeString); // create a new MsgTree object with the encoded string.
-        System.out.println("Character\tCode: \n------------------------"); // print the header.
-        printCodes(mainTree, ""); // print the codes for each character in the message tree.
-        System.out.println("------------------------\nMessage:"); // print the header.
-        String decodedMessage = decode(mainTree, encodingString); // decode the message.
-        // Finally, print the decoded message.
+        getFileName();
+        buildCodeStrings();
+        MsgTree mainTree = new MsgTree(encodeString);
+
+        System.out.println("character\tcode: \n------------------------");
+        printCodes(mainTree, "");
+        System.out.println("------------------------\nMESSAGE:");
+        String decodedMessage = decode(mainTree, encodingString);
+
         System.out.println(decodedMessage);
         statistics(encodingString, decodedMessage); // print the statistics.
     }
@@ -121,14 +122,24 @@ public class MsgTree {
         // Ask the user for the file name.
         System.out.print("Please enter filename to decode: ");
         // Set the input file name to the next line.
+        boolean isNotArch = false;
         try {
             inputFileName = inputScanner.nextLine().trim();
-            new File(inputFileName);
+            File nf = new File(inputFileName);
+            if (!nf.getAbsolutePath().endsWith(".arch")) {
+                isNotArch = true;
+                throw new FileNotFoundException();
+            }
         } catch (Exception e) {
-            throw new FileNotFoundException(" File '" + inputFileName + "' does not exist. ");
+            if(isNotArch){
+                throw new FileNotFoundException(" File '" + inputFileName + "' does not have the .arch extension. ");
+            }else {
+                throw new FileNotFoundException(" File '" + inputFileName + "' does not exist. ");
+            }
         }
         inputScanner.close();
     }
+
 
     /**
      * Builds strings from the file input variable and sets them to the static
