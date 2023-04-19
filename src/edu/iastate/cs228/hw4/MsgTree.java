@@ -8,50 +8,66 @@ import java.util.Scanner;
  * A binary tree that stores characters in the leaves.The binary tree is built
  * from an encoded string.The purpose of this class is to reconstruct/unzip a
  * message archived/encoded with a binary-tree-based algorithm with an `.arch`
- * extension.
+ * extension. The class includes 7 fields: staticCharacterIndex, encodeString,
+ * encodingString, inputFileName, left, right, and payloadCharacter.
  *
  * @author Conner Ohnesorge
+ * @summary a binary tree structure used to decode messages from encoded
+ *         strings.The publicly scoped class includes constructors and methods
+ *         to build the tree, print character codes, decode messages, and
+ *         display statistics of the encoding.
  */
 public class MsgTree {
 
     /**
-     * A static integer used to keep track the index of the encoded string in a
-     * private scope.
+     * A privately scoped static integer used to keep track the index of the encoded
+     * string.
      */
     private static int staticCharacterIndex = 0;
     /**
-     * A static string used to store the encoded string in a private scope.
+     * A privately scoped static string used to store the encoded string in a
+     * private scope.
      */
     private static String encodeString;
     /**
-     * A static string used to store the encoding string in a private scope.
+     * A privately scoped static string used to store the encoding string in a
+     * private scope.
      */
     private static String encodingString;
     /**
-     * The static string used to store the file name of the inputted file from the
-     * user in a private scope.
+     * The privately scoped static string used to store the file name of the
+     * inputted file from the user.
      */
     private static String inputFileName;
     /**
-     * A public character used to store the payload character for this MsgTree
-     * object.
+     * A publicly scoped character representing the payload character for this
+     * MsgTree object.
      */
     public char payloadCharacter;
 
     /**
-     * The Left MsgTree reference variable in a public scope.
+     * The publicly scoped left MsgTree reference variable in a public scope.
      */
     public MsgTree left;
     /**
-     * The Right MsgTree reference variable in a public scope.
+     * The publicly scoped right MsgTree reference variable.
      */
     public MsgTree right;
 
-/**
- * A constructor for a MsgTree object that takes a string as a parameter representing an encoded string.
- * @param EncodedString the encoded string being used to construct the MsgTree object.
- */
-public MsgTree(String EncodedString) {
+    /**
+     * A constructor for a MsgTree object that takes a string as a parameter
+     * representing an encoded string.First,initializes the payloadCharacter to the
+     * character at the current static Increment the static character index.Also,
+     * initializes the left MsgTree reference to a new MsgTree object constructed
+     * with the character at the static character index.Next,if the left MsgTree
+     * reference is an internal node(i.e. has payload character '^'),sets the left
+     * MsgTree to a new MsgTree object constructed with the encoded string at the
+     * index of our static array index variable.
+     *
+     * @param EncodedString the encoded string being used to construct the MsgTree
+     *                      object.
+     */
+    public MsgTree(String EncodedString) {
         // initialize the payloadCharacter to the character at the current static character index.
         this.payloadCharacter = EncodedString.charAt(staticCharacterIndex);
 
@@ -61,16 +77,20 @@ public MsgTree(String EncodedString) {
         // constructed with the character at the static character index.
         this.left = new MsgTree(EncodedString.charAt(staticCharacterIndex));
 
-        // if the left MsgTree reference is an internal node,then set the left MsgTree reference to a new MsgTree object
+        // if the left MsgTree reference is an internal node
+        // set the left MsgTree reference to a new MsgTree object
         // constructed with the encoded string.
         if (this.left.payloadCharacter == '^') {
             this.left = new MsgTree(EncodedString);
         }
         staticCharacterIndex++;
-        // initialize the right MsgTree reference to a new MsgTree object constructed with the character at the static character index.
+        // initialize the right MsgTree reference to a new MsgTree object
+        // constructed with the character at the static character index.
         this.right = new MsgTree(EncodedString.charAt(staticCharacterIndex));
 
-        // if the right MsgTree reference is a leaf node, then set the right MsgTree reference to a new MsgTree object constructed with the encoded string.
+        // if the right MsgTree reference is an internal node,
+        // then set the right MsgTree reference to a new MsgTree object
+        // constructed with the encoded string.
         if (this.right.payloadCharacter == '^') {
             this.right = new MsgTree(EncodedString);
         }
@@ -78,6 +98,7 @@ public MsgTree(String EncodedString) {
 
     /**
      * A constructor for a single node MsgTree taking a character as a parameter.
+     * Sets the payload character to the given character upon construction.
      *
      * @param payloadCharacter character being set as the payload character.
      */
@@ -87,12 +108,12 @@ public MsgTree(String EncodedString) {
 
     /**
      * Ask user for file name and then decodes message by first taking the `.arch`
-     * file given,creates binary tree and then decodes and prints message.In
-     * summary/other words, this program reads an encoded message and its tree
-     * structure from a file, constructs the binary tree, decodes the message, and
-     * then prints the decoded message.
+     * file given,creates binary tree and then decodes and prints message.In other
+     * words, this program reads an encoded message and its tree structure from a
+     * file, constructs the binary tree, decodes the message, and then prints the
+     * decoded message.
      *
-     * @throws FileNotFoundException if the file does not exist or is not found
+     * @throws FileNotFoundException if the file does not exist or is not found.
      */
     public static void main(String[] args) throws FileNotFoundException {
         getFileName();
@@ -109,8 +130,11 @@ public MsgTree(String EncodedString) {
     }
 
     /**
-     * Creates an input scanner, asking the user for input, scans for file name and
-     * then sets it as String inputFileName, and, finally, closes the scanner.
+     * Private method that retrieves an input from the user, ensuring that the file
+     * exists, and sets said input to the static variable inputFileName, the class
+     * variable for MsgTree that stores the file name. Creates an input scanner,
+     * asking the user for input, scans for file name and then sets it as String
+     * inputFileName, and, finally, closes the scanner.
      *
      * @throws FileNotFoundException if the file does not exist or is not found
      */
@@ -141,7 +165,12 @@ public MsgTree(String EncodedString) {
 
     /**
      * Builds strings from the file input variable and sets them to the static
-     * variables encodeString and encodingString.
+     * variables encodeString and encodingString.It performs the following
+     * operations: creates a file object, initializes a scanner object, reads the
+     * first line, reads the second line, creates a string builder object,
+     * initializes an empty string, iterates through each character in the second
+     * line, appends a new line character and the second line to the string builder
+     * object, reads the
      *
      * @throws FileNotFoundException if the file does not exist or is not found.
      */
@@ -150,7 +179,6 @@ public MsgTree(String EncodedString) {
         File inputFile = new File(inputFileName);
         // Create a scanner object to read from the input file.
         Scanner fileScanner;
-        // Try to open the file. If the file does not exist, throw an exception.
         try {
             fileScanner = new Scanner(inputFile);
         } catch (FileNotFoundException e) {
@@ -175,19 +203,38 @@ public MsgTree(String EncodedString) {
     }
 
     /**
-     * Recursive method that Prints the codes for each character in the message
-     * tree.
+     * Recursive function to print the character codes in a binary tree, taking two
+     * parameters: root, which is a node in the binary tree, and codeMessage, which
+     * is the accumulated binary code string from traversing the tree. Overall, the
+     * function performs the following operations: if the root is null, it means the
+     * tree is empty or traversal reached a non-existing node, so the function
+     * returns without doing anything; if pl, the payload character, is not '1', the
+     * current node is assumed to have a character payload;if pl is not ' 1 , the
+     * current node is assumed to have a character payload;if the payload, pl, is a
+     * new line character, the function prints the escape sequence "In" followed by
+     * three tabs ;otherwise, the function prints the character payload (pl)
+     * followed by three tabs. Otherwise, the function prints the character payload
+     * (pl) followed by three tabs; after printing the character/escape sequence, it
+     * prints the codeMessage containing the binary code for that character:
+     * finally, recursively calls itself for the left subtree with a codeMessage
+     * appended with '0' and for the right subtree with the codeMessage appended
+     * with '1'.
      *
-     * @param root        the root of the message tree.
-     * @param codeMessage the code message for the current node.
+     * @param root        the root of the message tree of type MsgTree.
+     * @param codeMessage the code message for the current node of type String.
      */
     static void printCodes(MsgTree root, String codeMessage) {
         if (root == null) {
             return;
         }
-        // if the root is an internal node, print the payload character and the code message.
-        if (root.payloadCharacter != '^') {
-            System.out.print(root.payloadCharacter + "\t\t");
+        char pl = root.payloadCharacter;
+        // if the root is an internal node,
+        if (pl != '^') {
+            if (pl == '\n') {
+                System.out.print("\\" + "n" + "\t\t\t");
+            } else {
+                System.out.print(root.payloadCharacter + "\t\t\t");
+            }
             System.out.println(codeMessage);
         }
         // print the left and right subtree codes.
@@ -219,7 +266,6 @@ public MsgTree(String EncodedString) {
         // The decoded message string builder.
         StringBuilder decodedMessage = new StringBuilder();
 
-        // while the current character index is less than the message length.
         while (currentCharacterIndex < msgLength) {
             currentCharacter = message.charAt(currentCharacterIndex);
             if (currentCharacter == '0') {
@@ -260,10 +306,16 @@ public MsgTree(String EncodedString) {
 
     /**
      * Calculates and prints the statistics of the encoding(e.g., average bits per
-     * character, total characters, and space savings percentage).{EXTRA CREDIT}
+     * character, the total characters in the decoded string, and the space savings
+     * percentage).Average bits per character are calculated by dividing the length
+     * of the encoding string by the length of the decoded string. Total Characters
+     * are calculated using the length of the decoded string. Space savings
+     * percentage is calculated by subtracting the length of the decoded string from
+     * the length of the encoding string and dividing the result by the length of
+     * the encoding string.
      *
-     * @param encodingString the string prior to encoding.
-     * @param decodedString  the string after decoding.
+     * @param encodingString the string representing the encoding.
+     * @param decodedString  the string representing the decoded message.
      */
     static private void statistics(String encodingString, String decodedString) {
         System.out.println("STATISTICS:");
